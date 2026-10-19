@@ -7,8 +7,8 @@ namespace Markly.Core.Models
     public class User : IdentityUser                 // inherits from IdentityUser
     {
        
-        public string DisplayName { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string DisplayName { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Relationships
         public List<Bookmark> Bookmarks { get; set; } = new();
