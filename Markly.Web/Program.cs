@@ -1,4 +1,5 @@
 using Markly.Core.Data;
+using Markly.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -18,6 +19,7 @@ namespace Markly.Web
             builder.Services.AddDefaultIdentity<Markly.Core.Models.User>(options =>
                     options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddScoped<BookmarkService>();
 
             // Add services to the container.
             builder.Services.AddRazorPages();

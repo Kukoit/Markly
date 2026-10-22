@@ -23,7 +23,7 @@ namespace Markly.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CollectionId")
+                    b.Property<int?>("CollectionId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -330,9 +330,7 @@ namespace Markly.Core.Migrations
                 {
                     b.HasOne("Markly.Core.Models.Collection", "Collection")
                         .WithMany("Bookmarks")
-                        .HasForeignKey("CollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CollectionId");
 
                     b.HasOne("Markly.Core.Models.User", "User")
                         .WithMany("Bookmarks")
