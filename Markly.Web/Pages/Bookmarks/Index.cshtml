@@ -1,0 +1,43 @@
+﻿@page
+@model Markly.Web.Pages.Bookmarks.IndexModel
+@{
+    ViewData["Title"] = "My bookmarks";
+}
+
+<h1>My bookmarks</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Add bookmark</a>
+</p>
+
+@if (Model.Bookmarks.Count == 0)
+{
+    <p>No bookmarks yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>URL</th>
+                <th>Favorite</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bookmark in Model.Bookmarks)
+            {
+                <tr>
+                    <td>@bookmark.Title</td>
+                    <td><a href="@bookmark.Url" target="_blank" rel="noopener">@bookmark.Url</a></td>
+                    <td>@(bookmark.IsFavorite ? "★" : "")</td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@bookmark.Id">Edit</a> |
+                        <a asp-page="Delete" asp-route-id="@bookmark.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

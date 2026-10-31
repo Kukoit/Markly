@@ -22,7 +22,10 @@ namespace Markly.Web
             builder.Services.AddScoped<BookmarkService>();
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Bookmarks");
+            });
 
             var app = builder.Build();
 

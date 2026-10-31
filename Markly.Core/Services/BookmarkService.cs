@@ -55,7 +55,7 @@ namespace Markly.Core.Services
             existing.Url = changed.Url;
             existing.Title = changed.Title;
             existing.Description = changed.Description;
-            existing.CollectionId = changed.CollectionId;
+            //existing.CollectionId = changed.CollectionId;
             existing.IsFavorite = changed.IsFavorite;
 
             await _db.SaveChangesAsync();
