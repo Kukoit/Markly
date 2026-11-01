@@ -1,0 +1,21 @@
+﻿@page "{id:int}"
+@model Markly.Web.Pages.Bookmarks.DeleteModel
+@{
+    ViewData["Title"] = "Delete bookmark";
+}
+
+<h1>Delete bookmark</h1>
+
+<p>Do you really want to delete this bookmark?</p>
+
+<dl>
+    <dt>Title</dt>
+    <dd>@Model.Bookmark.Title</dd>
+    <dt>URL</dt>
+    <dd>@Model.Bookmark.Url</dd>
+</dl>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="Index" class="btn btn-link">Cancel</a>
+</form>

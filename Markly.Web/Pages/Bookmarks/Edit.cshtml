@@ -1,0 +1,38 @@
+﻿@page "{id:int}"
+@model Markly.Web.Pages.Bookmarks.EditModel
+@{
+    ViewData["Title"] = "Edit bookmark";
+}
+
+<h1>Edit bookmark</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Input.Url" class="form-label"></label>
+        <input asp-for="Input.Url" class="form-control" />
+        <span asp-validation-for="Input.Url" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Title" class="form-label"></label>
+        <input asp-for="Input.Title" class="form-control" />
+        <span asp-validation-for="Input.Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Description" class="form-label"></label>
+        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input asp-for="Input.IsFavorite" class="form-check-input" />
+        <label asp-for="Input.IsFavorite" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="Index" class="btn btn-link">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
