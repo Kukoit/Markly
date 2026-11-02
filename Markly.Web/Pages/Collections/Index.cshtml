@@ -1,0 +1,39 @@
+﻿@page
+@model Markly.Web.Pages.Collections.IndexModel
+@{
+    ViewData["Title"] = "My collections";
+}
+
+<h1>My collections</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Add collection</a>
+</p>
+
+@if (Model.Collections.Count == 0)
+{
+    <p>No collections yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var collection in Model.Collections)
+            {
+                <tr>
+                    <td>@collection.Name</td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@collection.Id">Rename</a> |
+                        <a asp-page="Delete" asp-route-id="@collection.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -11,7 +11,7 @@ namespace Markly.Core.Models
         public int Id { get; set; }
         public string UserId { get; set; }
         public string Name { get; set; }
-        public int ParentId { get; set; }   
+        public int? ParentId { get; set; }   
 
         // Relationships
         public User User { get; set; }

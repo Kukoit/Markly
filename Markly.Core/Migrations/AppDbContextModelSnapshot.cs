@@ -82,7 +82,7 @@ namespace Markly.Core.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ParentId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
@@ -366,9 +366,7 @@ namespace Markly.Core.Migrations
                 {
                     b.HasOne("Markly.Core.Models.Collection", "Parent")
                         .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("Markly.Core.Models.User", "User")
                         .WithMany("Collections")
