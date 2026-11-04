@@ -1,0 +1,22 @@
+﻿@page "{id:int}"
+@model Markly.Web.Pages.Collections.EditModel
+@{
+    ViewData["Title"] = "Rename collection";
+}
+
+<h1>Rename collection</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Input.Name" class="form-label"></label>
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="Index" class="btn btn-link">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
