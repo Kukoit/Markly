@@ -16,5 +16,8 @@ namespace Markly.Web.Pages.Bookmarks
 
         [Display(Name = "Favorite")]
         public bool IsFavorite { get; set; }
+
+        [Display(Name = "Collection")]
+        public int? CollectionId { get; set; }
     }
 }

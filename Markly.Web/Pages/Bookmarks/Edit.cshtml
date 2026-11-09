@@ -24,6 +24,13 @@
         <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
     </div>
 
+    <div class="mb-3">
+        <label asp-for="Input.CollectionId" class="form-label"></label>
+        <select asp-for="Input.CollectionId" asp-items="Model.CollectionOptions" class="form-select">
+            <option value="">(No collection)</option>
+        </select>
+    </div>
+
     <div class="mb-3 form-check">
         <input asp-for="Input.IsFavorite" class="form-check-input" />
         <label asp-for="Input.IsFavorite" class="form-check-label"></label>

@@ -17,16 +17,17 @@ namespace Markly.Core.Services
             _db = db;
         }
 
-        // All bookmarks of one user, newest on top
+        // All bookmarks of one user, newest first
         public async Task<List<Bookmark>> GetBookmarksAsync(string userId)
         {
             return await _db.Bookmarks
+                .Include(b => b.Collection)          // NEW: also load the collection, to show its name
                 .Where(b => b.UserId == userId)
                 .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
         }
 
-        // One bookmark, but only if it belongs to this user 
+        // One bookmark, but only if it belongs to this user (otherwise null)
         public async Task<Bookmark?> GetBookmarkAsync(int id, string userId)
         {
             return await _db.Bookmarks
@@ -38,6 +39,7 @@ namespace Markly.Core.Services
         {
             bookmark.UserId = userId;
             bookmark.CreatedAt = DateTime.UtcNow;
+            bookmark.CollectionId = await CheckCollectionAsync(bookmark.CollectionId, userId);   // NEW
 
             _db.Bookmarks.Add(bookmark);
             await _db.SaveChangesAsync();
@@ -55,8 +57,8 @@ namespace Markly.Core.Services
             existing.Url = changed.Url;
             existing.Title = changed.Title;
             existing.Description = changed.Description;
-            //existing.CollectionId = changed.CollectionId;
             existing.IsFavorite = changed.IsFavorite;
+            existing.CollectionId = await CheckCollectionAsync(changed.CollectionId, userId);   // NEW (back again)
 
             await _db.SaveChangesAsync();
             return true;
@@ -74,6 +76,20 @@ namespace Markly.Core.Services
             _db.Bookmarks.Remove(existing);
             await _db.SaveChangesAsync();
             return true;
+        }
+
+        // NEW: only accept a collection that belongs to this user; otherwise use "no collection"
+        private async Task<int?> CheckCollectionAsync(int? collectionId, string userId)
+        {
+            if (collectionId == null)
+            {
+                return null;
+            }
+
+            var belongsToUser = await _db.Collections
+                .AnyAsync(c => c.Id == collectionId && c.UserId == userId);
+
+            return belongsToUser ? collectionId : null;
         }
     }
 }

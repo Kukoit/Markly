@@ -21,6 +21,7 @@ else
             <tr>
                 <th>Title</th>
                 <th>URL</th>
+                <th>Collection</th>
                 <th>Favorite</th>
                 <th></th>
             </tr>
@@ -31,6 +32,7 @@ else
                 <tr>
                     <td>@bookmark.Title</td>
                     <td><a href="@bookmark.Url" target="_blank" rel="noopener">@bookmark.Url</a></td>
+                    <td>@bookmark.Collection?.Name</td>
                     <td>@(bookmark.IsFavorite ? "★" : "")</td>
                     <td>
                         <a asp-page="Edit" asp-route-id="@bookmark.Id">Edit</a> |
