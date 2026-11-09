@@ -1,0 +1,15 @@
+﻿@page "{id:int}"
+@model Markly.Web.Pages.Collections.DeleteModel
+@{
+    ViewData["Title"] = "Delete collection";
+}
+
+<h1>Delete collection</h1>
+
+<p>Do you really want to delete the collection <strong>@Model.Collection.Name</strong>?</p>
+<p>The bookmarks in this collection will not be deleted. They will just no longer belong to a collection.</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="Index" class="btn btn-link">Cancel</a>
+</form>
