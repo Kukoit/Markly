@@ -21,6 +21,15 @@ namespace Markly.Web
                 .AddEntityFrameworkStores<AppDbContext>();
             builder.Services.AddScoped<BookmarkService>();
             builder.Services.AddScoped<CollectionService>();
+            builder.Services.AddScoped<TagService>();
+
+            // Add Tags Folder Authorization
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Bookmarks");
+                options.Conventions.AuthorizeFolder("/Collections");
+                options.Conventions.AuthorizeFolder("/Tags");
+            });
 
             // Add services to the container.
             builder.Services.AddRazorPages(options =>

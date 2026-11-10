@@ -1,0 +1,39 @@
+﻿@page
+@model Markly.Web.Pages.Tags.IndexModel
+@{
+    ViewData["Title"] = "My tags";
+}
+
+<h1>My tags</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Add tag</a>
+</p>
+
+@if (Model.Tags.Count == 0)
+{
+    <p>No tags yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tag in Model.Tags)
+            {
+                <tr>
+                    <td><span class="badge" style="background-color: @tag.Color">@tag.Name</span></td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@tag.Id">Edit</a> |
+                        <a asp-page="Delete" asp-route-id="@tag.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
