@@ -23,12 +23,36 @@
         <label asp-for="Input.Description" class="form-label"></label>
         <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
     </div>
+
     <div class="mb-3">
         <label asp-for="Input.CollectionId" class="form-label"></label>
         <select asp-for="Input.CollectionId" asp-items="Model.CollectionOptions" class="form-select">
             <option value="">(No collection)</option>
         </select>
     </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tags</label>
+        @if (Model.Tags.Count == 0)
+        {
+            <p class="text-muted">No tags yet. <a asp-page="/Tags/Create">Create a tag</a></p>
+        }
+        else
+        {
+            <div>
+                @foreach (var tag in Model.Tags)
+                {
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" class="form-check-input"
+                               id="tag-@tag.Id" name="Input.TagIds" value="@tag.Id"
+                               checked="@Model.Input.TagIds.Contains(tag.Id)" />
+                        <label class="form-check-label" for="tag-@tag.Id">@tag.Name</label>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
     <div class="mb-3 form-check">
         <input asp-for="Input.IsFavorite" class="form-check-input" />
         <label asp-for="Input.IsFavorite" class="form-check-label"></label>

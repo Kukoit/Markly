@@ -19,5 +19,7 @@ namespace Markly.Web.Pages.Bookmarks
 
         [Display(Name = "Collection")]
         public int? CollectionId { get; set; }
+
+        public List<int> TagIds { get; set; } = new();
     }
 }
