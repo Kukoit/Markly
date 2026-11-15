@@ -1,0 +1,18 @@
+﻿@page "{id:int}"
+@model Markly.Web.Pages.Tags.DeleteModel
+@{
+    ViewData["Title"] = "Delete tag";
+}
+
+<h1>Delete tag</h1>
+
+<p>
+    Do you really want to delete the tag
+    <span class="badge" style="background-color: @Model.Tag.Color">@Model.Tag.Name</span>?
+</p>
+<p>The tag will be removed from all bookmarks. The bookmarks themselves will not be deleted.</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="Index" class="btn btn-link">Cancel</a>
+</form>
