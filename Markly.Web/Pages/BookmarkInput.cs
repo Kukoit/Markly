@@ -6,12 +6,14 @@ namespace Markly.Web.Pages.Bookmarks
     {
         [Required]
         [Url]
+        [StringLength(2048)]
         public string Url { get; set; } = string.Empty;
 
         [Required]
         [StringLength(200)]
         public string Title { get; set; } = string.Empty;
 
+        [StringLength(1000)]
         public string? Description { get; set; }
 
         [Display(Name = "Favorite")]

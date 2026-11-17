@@ -22,6 +22,23 @@ namespace Markly.Core.Data
 
             modelBuilder.Entity<BookmarkTag>()
                 .HasKey(bt => new { bt.BookmarkId, bt.TagId });
+
+            // Maximum lengths for text columns
+            modelBuilder.Entity<Bookmark>(entity =>
+            {
+                entity.Property(b => b.Url).HasMaxLength(2048);
+                entity.Property(b => b.Title).HasMaxLength(200);
+                entity.Property(b => b.Description).HasMaxLength(1000);
+            });
+
+            modelBuilder.Entity<Collection>()
+                .Property(c => c.Name).HasMaxLength(100);
+
+            modelBuilder.Entity<Tag>(entity =>
+            {
+                entity.Property(t => t.Name).HasMaxLength(50);
+                entity.Property(t => t.Color).HasMaxLength(7);
+            });
         }
     }
 }

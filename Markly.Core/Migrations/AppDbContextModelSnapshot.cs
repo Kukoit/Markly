@@ -31,6 +31,7 @@ namespace Markly.Core.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsFavorite")
@@ -38,10 +39,12 @@ namespace Markly.Core.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
                         .IsRequired()
+                        .HasMaxLength(2048)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -54,7 +57,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookmarks", (string)null);
+                    b.ToTable("Bookmarks");
                 });
 
             modelBuilder.Entity("Markly.Core.Models.BookmarkTag", b =>
@@ -69,7 +72,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("BookmarkTags", (string)null);
+                    b.ToTable("BookmarkTags");
                 });
 
             modelBuilder.Entity("Markly.Core.Models.Collection", b =>
@@ -80,6 +83,7 @@ namespace Markly.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ParentId")
@@ -95,7 +99,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Collections", (string)null);
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("Markly.Core.Models.Tag", b =>
@@ -106,10 +110,12 @@ namespace Markly.Core.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
+                        .HasMaxLength(7)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -120,7 +126,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Markly.Core.Models.User", b =>
