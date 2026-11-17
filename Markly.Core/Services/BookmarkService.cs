@@ -17,8 +17,9 @@ namespace Markly.Core.Services
             _db = db;
         }
 
-        // All bookmarks of one user, newest first. Optionally only those with a certain tag
-        public async Task<List<Bookmark>> GetBookmarksAsync(string userId, int? tagId = null)
+        // All bookmarks of one user, newest first.
+        // Optional filters: only a certain tag, only favorites
+        public async Task<List<Bookmark>> GetBookmarksAsync(string userId, int? tagId = null, bool favoritesOnly = false)
         {
             var query = _db.Bookmarks
                 .Include(b => b.Collection)
@@ -27,6 +28,11 @@ namespace Markly.Core.Services
             if (tagId != null)
             {
                 query = query.Where(b => _db.BookmarkTags.Any(bt => bt.BookmarkId == b.Id && bt.TagId == tagId));
+            }
+
+            if (favoritesOnly)                                   // NEW
+            {
+                query = query.Where(b => b.IsFavorite);
             }
 
             return await query
@@ -46,7 +52,7 @@ namespace Markly.Core.Services
         {
             bookmark.UserId = userId;
             bookmark.CreatedAt = DateTime.UtcNow;
-            bookmark.CollectionId = await CheckCollectionAsync(bookmark.CollectionId, userId);   // NEW
+            bookmark.CollectionId = await CheckCollectionAsync(bookmark.CollectionId, userId);
 
             _db.Bookmarks.Add(bookmark);
             await _db.SaveChangesAsync();
@@ -65,7 +71,22 @@ namespace Markly.Core.Services
             existing.Title = changed.Title;
             existing.Description = changed.Description;
             existing.IsFavorite = changed.IsFavorite;
-            existing.CollectionId = await CheckCollectionAsync(changed.CollectionId, userId);   // NEW (back again)
+            existing.CollectionId = await CheckCollectionAsync(changed.CollectionId, userId);
+
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        // NEW: switch favorite on/off. Returns false if it doesn't exist or isn't this user's
+        public async Task<bool> ToggleFavoriteAsync(int id, string userId)
+        {
+            var existing = await GetBookmarkAsync(id, userId);
+            if (existing == null)
+            {
+                return false;
+            }
+
+            existing.IsFavorite = !existing.IsFavorite;
 
             await _db.SaveChangesAsync();
             return true;
@@ -85,7 +106,7 @@ namespace Markly.Core.Services
             return true;
         }
 
-        // NEW: only accept a collection that belongs to this user; otherwise use "no collection"
+        // Only accept a collection that belongs to this user; otherwise use "no collection"
         private async Task<int?> CheckCollectionAsync(int? collectionId, string userId)
         {
             if (collectionId == null)

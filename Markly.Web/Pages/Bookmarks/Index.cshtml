@@ -10,12 +10,19 @@
     <a asp-page="Create" class="btn btn-primary">Add bookmark</a>
 </p>
 
+<div class="btn-group mb-3">
+    <a asp-page="Index" asp-route-tagId="@Model.TagId"
+       class="btn btn-outline-secondary @(Model.FavoritesOnly ? "" : "active")">All</a>
+    <a asp-page="Index" asp-route-tagId="@Model.TagId" asp-route-favorites="true"
+       class="btn btn-outline-secondary @(Model.FavoritesOnly ? "active" : "")">★ Favorites</a>
+</div>
+
 @if (Model.FilterTag != null)
 {
     <p>
         Showing bookmarks tagged
         <span class="badge" style="background-color: @Model.FilterTag.Color">@Model.FilterTag.Name</span>
-        · <a asp-page="Index">Show all</a>
+        · <a asp-page="Index" asp-route-favorites="@Model.FavoritesOnly">Remove tag filter</a>
     </p>
 }
 
@@ -28,11 +35,11 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>Title</th>
                 <th>URL</th>
                 <th>Collection</th>
                 <th>Tags</th>
-                <th>Favorite</th>
                 <th></th>
             </tr>
         </thead>
@@ -40,6 +47,17 @@ else
             @foreach (var bookmark in Model.Bookmarks)
             {
                 <tr>
+                    <td>
+                        <form method="post" asp-page-handler="ToggleFavorite"
+                              asp-route-id="@bookmark.Id"
+                              asp-route-tagId="@Model.TagId"
+                              asp-route-favorites="@Model.FavoritesOnly">
+                            <button type="submit" class="btn btn-link p-0 text-decoration-none fs-5"
+                                    title="@(bookmark.IsFavorite ? "Remove from favorites" : "Add to favorites")">
+                                @(bookmark.IsFavorite ? "★" : "☆")
+                            </button>
+                        </form>
+                    </td>
                     <td>@bookmark.Title</td>
                     <td><a href="@bookmark.Url" target="_blank" rel="noopener">@bookmark.Url</a></td>
                     <td>@bookmark.Collection?.Name</td>
@@ -48,13 +66,12 @@ else
                         {
                             foreach (var tag in tags)
                             {
-                                <a asp-page="Index" asp-route-tagId="@tag.Id"
+                                <a asp-page="Index" asp-route-tagId="@tag.Id" asp-route-favorites="@Model.FavoritesOnly"
                                    class="badge text-decoration-none"
                                    style="background-color: @tag.Color">@tag.Name</a>
                             }
                         }
                     </td>
-                    <td>@(bookmark.IsFavorite ? "★" : "")</td>
                     <td>
                         <a asp-page="Edit" asp-route-id="@bookmark.Id">Edit</a> |
                         <a asp-page="Delete" asp-route-id="@bookmark.Id">Delete</a>
