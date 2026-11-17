@@ -31,13 +31,7 @@ namespace Markly.Web
                 options.Conventions.AuthorizeFolder("/Tags");
             });
 
-            // Add services to the container.
-            builder.Services.AddRazorPages(options =>
-            {
-                options.Conventions.AuthorizeFolder("/Bookmarks");
-                options.Conventions.AuthorizeFolder("/Collections");
-            });
-
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
