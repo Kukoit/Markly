@@ -26,15 +26,18 @@ namespace Markly.Web.Pages.Tags
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // 1. First the normal validation (required, length, color format)
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var userId = _userManager.GetUserId(User)!;
 
+            // 2. Only then the duplicate check, now Input.Name is guaranteed not to be empty
             if (await _tagService.NameExistsAsync(Input.Name, userId))
             {
                 ModelState.AddModelError("Input.Name", "You already have a tag with this name.");
-            }
-
-            if (!ModelState.IsValid)
-            {
                 return Page();
             }
 
