@@ -54,7 +54,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookmarks");
+                    b.ToTable("Bookmarks", (string)null);
                 });
 
             modelBuilder.Entity("Markly.Core.Models.BookmarkTag", b =>
@@ -69,7 +69,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("BookmarkTags");
+                    b.ToTable("BookmarkTags", (string)null);
                 });
 
             modelBuilder.Entity("Markly.Core.Models.Collection", b =>
@@ -95,7 +95,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Collections");
+                    b.ToTable("Collections", (string)null);
                 });
 
             modelBuilder.Entity("Markly.Core.Models.Tag", b =>
@@ -120,7 +120,7 @@ namespace Markly.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("Markly.Core.Models.User", b =>

@@ -10,7 +10,7 @@ namespace Markly.Core.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        // No DbSet<User> here: IdentityDbContext already provides Users
         public DbSet<Bookmark> Bookmarks { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -18,9 +18,8 @@ namespace Markly.Core.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);   // sets up the Identity tables
 
-            // BookmarkTag links a bookmark to a tag, so its key is the pair of both IDs
             modelBuilder.Entity<BookmarkTag>()
                 .HasKey(bt => new { bt.BookmarkId, bt.TagId });
         }
