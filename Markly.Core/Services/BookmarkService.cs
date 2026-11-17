@@ -17,12 +17,19 @@ namespace Markly.Core.Services
             _db = db;
         }
 
-        // All bookmarks of one user, newest first
-        public async Task<List<Bookmark>> GetBookmarksAsync(string userId)
+        // All bookmarks of one user, newest first. Optionally only those with a certain tag
+        public async Task<List<Bookmark>> GetBookmarksAsync(string userId, int? tagId = null)
         {
-            return await _db.Bookmarks
-                .Include(b => b.Collection)          // NEW: also load the collection, to show its name
-                .Where(b => b.UserId == userId)
+            var query = _db.Bookmarks
+                .Include(b => b.Collection)
+                .Where(b => b.UserId == userId);
+
+            if (tagId != null)
+            {
+                query = query.Where(b => _db.BookmarkTags.Any(bt => bt.BookmarkId == b.Id && bt.TagId == tagId));
+            }
+
+            return await query
                 .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
         }

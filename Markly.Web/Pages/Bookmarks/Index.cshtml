@@ -10,9 +10,18 @@
     <a asp-page="Create" class="btn btn-primary">Add bookmark</a>
 </p>
 
+@if (Model.FilterTag != null)
+{
+    <p>
+        Showing bookmarks tagged
+        <span class="badge" style="background-color: @Model.FilterTag.Color">@Model.FilterTag.Name</span>
+        · <a asp-page="Index">Show all</a>
+    </p>
+}
+
 @if (Model.Bookmarks.Count == 0)
 {
-    <p>No bookmarks yet.</p>
+    <p>No bookmarks found.</p>
 }
 else
 {
@@ -22,6 +31,7 @@ else
                 <th>Title</th>
                 <th>URL</th>
                 <th>Collection</th>
+                <th>Tags</th>
                 <th>Favorite</th>
                 <th></th>
             </tr>
@@ -33,6 +43,17 @@ else
                     <td>@bookmark.Title</td>
                     <td><a href="@bookmark.Url" target="_blank" rel="noopener">@bookmark.Url</a></td>
                     <td>@bookmark.Collection?.Name</td>
+                    <td>
+                        @if (Model.TagsByBookmark.TryGetValue(bookmark.Id, out var tags))
+                        {
+                            foreach (var tag in tags)
+                            {
+                                <a asp-page="Index" asp-route-tagId="@tag.Id"
+                                   class="badge text-decoration-none"
+                                   style="background-color: @tag.Color">@tag.Name</a>
+                            }
+                        }
+                    </td>
                     <td>@(bookmark.IsFavorite ? "★" : "")</td>
                     <td>
                         <a asp-page="Edit" asp-route-id="@bookmark.Id">Edit</a> |
