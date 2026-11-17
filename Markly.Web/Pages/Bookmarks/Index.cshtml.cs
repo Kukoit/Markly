@@ -27,18 +27,20 @@ namespace Markly.Web.Pages.Bookmarks
         // The current filters (so the page can keep them when links are clicked)
         public int? TagId { get; set; }
         public bool FavoritesOnly { get; set; }
+        public string? Search { get; set; }
 
         // The tag the list is filtered by (null = no tag filter)
         public Tag? FilterTag { get; set; }
 
-        public async Task OnGetAsync(int? tagId, bool favorites)
+        public async Task OnGetAsync(int? tagId, bool favorites, string? search)
         {
             TagId = tagId;
             FavoritesOnly = favorites;
+            Search = search;
 
             var userId = _userManager.GetUserId(User)!;
 
-            Bookmarks = await _bookmarkService.GetBookmarksAsync(userId, tagId, favorites);
+            Bookmarks = await _bookmarkService.GetBookmarksAsync(userId, tagId, favorites, search);
             TagsByBookmark = await _tagService.GetTagsByBookmarkAsync(userId);
 
             if (tagId != null)
@@ -48,7 +50,7 @@ namespace Markly.Web.Pages.Bookmarks
         }
 
         // Runs when the star button is clicked
-        public async Task<IActionResult> OnPostToggleFavoriteAsync(int id, int? tagId, bool favorites)
+        public async Task<IActionResult> OnPostToggleFavoriteAsync(int id, int? tagId, bool favorites, string? search)
         {
             var userId = _userManager.GetUserId(User)!;
             var success = await _bookmarkService.ToggleFavoriteAsync(id, userId);
@@ -58,8 +60,8 @@ namespace Markly.Web.Pages.Bookmarks
                 return NotFound();
             }
 
-            // Back to the list, with the same filters as before
-            return RedirectToPage(new { tagId, favorites });
+            // Back to the list, with the same filters and search as before
+            return RedirectToPage(new { tagId, favorites, search });
         }
     }
 }

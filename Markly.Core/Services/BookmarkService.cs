@@ -18,8 +18,8 @@ namespace Markly.Core.Services
         }
 
         // All bookmarks of one user, newest first.
-        // Optional filters: only a certain tag, only favorites
-        public async Task<List<Bookmark>> GetBookmarksAsync(string userId, int? tagId = null, bool favoritesOnly = false)
+        // Optional filters: only a certain tag, only favorites, a search text
+        public async Task<List<Bookmark>> GetBookmarksAsync(string userId, int? tagId = null, bool favoritesOnly = false, string? search = null)
         {
             var query = _db.Bookmarks
                 .Include(b => b.Collection)
@@ -30,9 +30,19 @@ namespace Markly.Core.Services
                 query = query.Where(b => _db.BookmarkTags.Any(bt => bt.BookmarkId == b.Id && bt.TagId == tagId));
             }
 
-            if (favoritesOnly)                                   // NEW
+            if (favoritesOnly)
             {
                 query = query.Where(b => b.IsFavorite);
+            }
+
+            if (!string.IsNullOrWhiteSpace(search))              // NEW
+            {
+                var pattern = $"%{search.Trim()}%";
+
+                query = query.Where(b =>
+                    EF.Functions.Like(b.Title, pattern) ||
+                    EF.Functions.Like(b.Url, pattern) ||
+                    EF.Functions.Like(b.Description, pattern));
             }
 
             return await query
